@@ -14,17 +14,41 @@ public class StudentController {
     private StudentServices studentServices;
 
     @PostMapping(value = "/save")
-    public String saveStudent(@RequestBody Student students)
+    private String saveStudent(@RequestBody Student students)
     {
         studentServices.saveorUpdate(students);
         return students.get_id();
     }
 
     @GetMapping(value = "/getAll")
-    public Iterable<Student>getStudents()
+    private Iterable<Student>getStudents()
     {
 
         return studentServices.listAll();
+    }
+
+    @PutMapping(value = "/edit/{id}")
+    private Student update(@RequestBody Student student, @PathVariable(name = "id") String _id)
+    {
+
+        student.set_id(_id);
+        studentServices.saveorUpdate(student);
+        return student;
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private void deleteStudent(@PathVariable("id") String _id)
+    {
+
+        studentServices.deleteStudent(_id);
+
+    }
+
+    @RequestMapping("/student/{id}")
+    private Student getStudents(@PathVariable(name = "id") String studentid)
+    {
+        return studentServices.getStudentByID(studentid);
     }
 
 }
